@@ -9,7 +9,7 @@ WiFiServer server(2000);
 WiFiClient client; /*socket*/
 
 const char *ssid = "Room006";
-const char *password = "ohDofa5rei9iSh4c";
+const char *password = "<password>";
 const char *host="sbsrv1.cs.nuim.ie";
 const int Port=80;
 String string_host="sbsrv1.cs.nuim.ie";
