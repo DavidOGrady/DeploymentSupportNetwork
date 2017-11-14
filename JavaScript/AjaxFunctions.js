@@ -9,12 +9,12 @@ function loadData() {
   };
   if(last_timestamp == null){
     // This should only run the first time as last_timestamp will become defined after this
-    xhttp.open("GET", "Display.php", true);
+    xhttp.open("GET", "php/Display.php", true);
     xhttp.send();
   }else{
     // This should run everytime once we get the timestamp data. This timestamp is used
     // by Display.php to fetch only new data as it comes into the db
-    xhttp.open("GET", "Display.php?last_timestamp="+last_timestamp, true);
+    xhttp.open("GET", "php/Display.php?last_timestamp="+last_timestamp, true);
     xhttp.send();
   }
 

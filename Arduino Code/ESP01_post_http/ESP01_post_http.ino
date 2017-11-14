@@ -11,11 +11,11 @@ WiFiServer server(2000);
 WiFiClient client; /*socket*/
 
 const char *ssid = "Room006";
-const char *password = "<password>";
+const char *password = "ohDofa5rei9iSh4c";
 const char *host="sbsrv1.cs.nuim.ie";
 const int Port=80;
 String string_host="sbsrv1.cs.nuim.ie";
-String API_path="/fyp/ogrady/Record.php";
+String API_path="/fyp/ogrady/php/Record.php";
 String PostData = "{\"Node_ID\":1994,\"data\":\"Hello. I can send this thanks to the http library\" }";
 HTTPClient http;
 bool connected=false;
@@ -30,7 +30,7 @@ void setup() {
     Serial.print("Wait for WiFi... ");
 
 
-    
+
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid,password);
     while(WiFi.status() != WL_CONNECTED) {/*when we have wifi connexion*/
@@ -45,15 +45,15 @@ void setup() {
 
     delay(500);
 
-    
+
 
 
 }
 
 void loop() {
-  
+
 //use the soket client for the TCP connection
-  
+
   if(!connected)
   {
     Serial.print("connecting to ");
@@ -74,7 +74,7 @@ void loop() {
       connected = true;
     }else {
       Serial.println("connection failed");
-    }  
+    }
   }
 
 // client.print("Hello\n");/*send data to server*/
@@ -83,16 +83,16 @@ delay(1000);
   bool dataStillAvailable = true;
   while(dataStillAvailable){
     if (client.available()) { /*If the data is available*/
-         
+
       unsigned char l= client.read();/*recieve from the server*/
       Serial.printf("%c",l);
-     
+
     }
     else{
-      dataStillAvailable = false;    
+      dataStillAvailable = false;
     }
   }
-  
+
     delay(1000);
-      
+
 }

@@ -14,7 +14,7 @@ const char *host="sbsrv1.cs.nuim.ie";
 const int Port=80;
 String string_host="sbsrv1.cs.nuim.ie";
 String API_path="/fyp/ogrady/php/Record.php";
-String PostData = "{\"Node_ID\":1994,\"data\":\"Hello. I can send this thanks to the wifi library.\" }";
+String PostData;
 bool connected=false;
 
 void setup() {
@@ -22,23 +22,23 @@ void setup() {
     Serial.begin(115200);
     delay(10);
  // We start by connecting to a WiFi network
-    Serial.println();
-    Serial.println();
-    Serial.print("Wait for WiFi... ");
+//    Serial.println();
+//    Serial.println();
+//    Serial.print("Wait for WiFi... ");
 
 
 
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid,password);
     while(WiFi.status() != WL_CONNECTED) {/*when we have wifi connexion*/
-        Serial.print(".");
+//        Serial.print(".");
         delay(500);
     }
 
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+//    Serial.println("");
+//    Serial.println("WiFi connected");
+//    Serial.println("IP address: ");
+//    Serial.println(WiFi.localIP());
 
     delay(500);
 
@@ -48,18 +48,26 @@ void setup() {
 }
 
 void loop() {
-
+  int i = 0;
 //use the soket client for the TCP connection
 
   if(!connected)
   {
-    Serial.print("connecting to ");
-    Serial.println(host);
-    if (client.connect(host,Port)) /*If the client is connected to the server*/
+//    Serial.print("connecting to ");
+//    Serial.println(host);
+    if(Serial.available()){
+      PostData = "{\"Node_ID\":1994,\"data\":\"";
+      while(Serial.available()){
+        PostData = PostData + char(Serial.read());
+        i++;
+        }
+      }
+     PostData = PostData + "\"}";
+    if ((i>0) && client.connect(host,Port)) /*If the client is connected to the server*/
     {
-      Serial.println("connected");
-      Serial.println("[Sending a request]");
-      Serial.println(PostData);
+//      Serial.println("connected");
+//      Serial.println("[Sending a request]");
+//      Serial.println(PostData);
       // The following code will send a post request to the server.
       // I had to use a new string for the host name as the char array was
       // behaving in different than I had anticapted (string_host)
@@ -71,9 +79,10 @@ void loop() {
       client.println(PostData.length());
       client.println();
       client.println(PostData);
-      connected = true;
+      //Serial.println("Post Done");
+      //connected = true;
     }else {
-      Serial.println("connection failed");
+      //Serial.println("connection failed");
     }
   }
 
@@ -85,7 +94,7 @@ delay(1000);
     if (client.available()) { /*If the data is available*/
 
       unsigned char l= client.read();/*recieve from the server*/
-      Serial.printf("%c",l);
+      // Serial.printf("%c",l);
 
     }
     else{

@@ -12,7 +12,7 @@
 
 	// Prep data to be sent to the database
 	$ts = new MongoDB\BSON\UTCDateTime();
-	$data = ['Node_ID'=>$input["Node_ID"], 'data'=>$input["Data"], 'ts'=>$ts];
+	$data = ['Node_ID'=>$input["Node_ID"], 'data'=>$input["data"], 'ts'=>$ts];
 
 	// Send the data to the server
 	try {
