@@ -25,23 +25,23 @@ void setup() {
     Serial.begin(115200);
     delay(10);
  // We start by connecting to a WiFi network
-    Serial.println();
-    Serial.println();
-    Serial.print("Wait for WiFi... ");
+    // Serial.println();
+    // Serial.println();
+    // Serial.print("Wait for WiFi... ");
 
 
 
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid,password);
     while(WiFi.status() != WL_CONNECTED) {/*when we have wifi connexion*/
-        Serial.print(".");
+        //Serial.print(".");
         delay(500);
     }
 
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+    // Serial.println("");
+    // Serial.println("WiFi connected");
+    // Serial.println("IP address: ");
+    // Serial.println(WiFi.localIP());
 
     delay(500);
 
@@ -56,8 +56,8 @@ void loop() {
 
   if(!connected)
   {
-    Serial.print("connecting to ");
-    Serial.println(host);
+    // Serial.print("connecting to ");
+    // Serial.println(host);
     if (client.connect(host,Port)) /*If the client is connected to the server*/
     {
       Serial.println("connected");
@@ -78,21 +78,21 @@ void loop() {
   }
 
 // client.print("Hello\n");/*send data to server*/
-delay(1000);
-
-  bool dataStillAvailable = true;
-  while(dataStillAvailable){
-    if (client.available()) { /*If the data is available*/
-
-      unsigned char l= client.read();/*recieve from the server*/
-      Serial.printf("%c",l);
-
-    }
-    else{
-      dataStillAvailable = false;
-    }
-  }
-
-    delay(1000);
+// delay(1000);
+//
+//   bool dataStillAvailable = true;
+//   while(dataStillAvailable){
+//     if (client.available()) { /*If the data is available*/
+//
+//       unsigned char l= client.read();/*recieve from the server*/
+//       Serial.printf("%c",l);
+//
+//     }
+//     else{
+//       dataStillAvailable = false;
+//     }
+//   }
+//
+//     delay(1000);
 
 }
