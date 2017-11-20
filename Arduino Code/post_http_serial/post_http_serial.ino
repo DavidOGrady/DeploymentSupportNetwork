@@ -25,8 +25,7 @@ void setup() {
     delay(10);
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid,password);
-    while(WiFi.status() != WL_CONNECTED) {/*when we have wifi connexion*/
-        //Serial.print(".");
+    while(WiFi.status() != WL_CONNECTED) {/*when we have wifi connection*/
         delay(10);
     }
     delay(10);
@@ -54,11 +53,8 @@ void loop() {
       http.begin("http://" +string_host + API_path);
       http.addHeader("Content-Type", "application/json");
       http.POST(PostData);
-      //http.writeToStream(&Serial);
       http.end();
-      //connected = true;
     }
   }
      delay(100);
-
 }

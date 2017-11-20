@@ -21,30 +21,13 @@ void setup() {
 
     Serial.begin(9600);
     delay(10);
- // We start by connecting to a WiFi network
-//    Serial.println();
-//    Serial.println();
-//    Serial.print("Wait for WiFi... ");
-
-
 
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid,password);
     while(WiFi.status() != WL_CONNECTED) {/*when we have wifi connexion*/
-        //Serial.print(".");
         delay(500);
     }
-
-//    Serial.println("");
-//    Serial.println("WiFi connected");
-//    Serial.println("IP address: ");
-//    Serial.println(WiFi.localIP());
-
     delay(500);
-
-
-
-
 }
 
 void loop() {
@@ -54,8 +37,6 @@ void loop() {
   if(!connected)
   {
     PostData = "{\"Node_ID\":1994,\"data\":\"";
-    //Serial.print("connecting to ");
-    //Serial.println(host);
     if(Serial.available()){
       while(Serial.available()){
         PostData = PostData + char(Serial.read());
@@ -63,12 +44,8 @@ void loop() {
         }
       }
      PostData = PostData + "\"}";
-     //Serial.println(PostData);
-    if ((i>0) && client.connect(host,Port)) /*If the client is connected to the server*/
+    if ((PostData.charAt(PostData.length()-3) == '\r') && client.connect(host,Port)) /*If the client is connected to the server*/
     {
-//      Serial.println("connected");
-//      Serial.println("[Sending a request]");
-//      Serial.println(PostData);
       // The following code will send a post request to the server.
       // I had to use a new string for the host name as the char array was
       // behaving in different than I had anticapted (string_host)
@@ -80,11 +57,6 @@ void loop() {
       client.println(PostData.length());
       client.println();
       client.println(PostData);
-      //delay(1000);
-      //Serial.println("Post Done");
-      //connected = true;
-    }else {
-      //Serial.println("connection failed");
     }
   }
   delay(100);
