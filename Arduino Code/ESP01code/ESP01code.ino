@@ -37,19 +37,19 @@ void loop() {
   {
     if(Serial.available() > 0){
       while(Serial.available() && (len<128)){
-        data[len++] = char(Serial.read());
+        data[len] = char(Serial.read());
+        len++;
         }
       }
     if (((len>0) && (data[len-1]=='\r')) || (len == 128)) /*If there is a valid input sent the ESP-01 board*/
     {
       //Make sure that data is null terminated
-      data[len] = '\000';
+      data[len] = '\0';
 
       // Create postData only at this point 
       String dataString = String(data);
       // Serial.println("This is the dataString: " + dataString);
-      String postData = "{\"Node_ID\":1994,\"data\":\""+ dataString + "\"}"; 
-      
+      String postData = "{\"Node_ID\":1994,\"data\":\""+ dataString + "\"}";
       // The following code will send a post request to the server.
       // I had to use a new string for the host name as the char array was
       // behaving in different than I had anticapted (string_host)
@@ -60,8 +60,6 @@ void loop() {
 
       //Reset variables
       len = 0;
-      char data[128];
     }
   }
-     delay(10);
 }
