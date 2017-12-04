@@ -4,10 +4,40 @@ var Data;
 var nodesParRow = 3;
 var amountOfNodesInRow = 0;
 var nodeCounter = 0;
+var pollingSwitch = false;
+var pollingIntervalObject;
+var switchbutton;
+
+// This function will be used as a switch to turn on and off the polling process
+function pollSwitch() {
+    pollingSwitch = !pollingSwitch;
+    if (pollingSwitch){
+      // Start polling and change button to off switch
+      console.log("Start Polling");
+      pollingIntervalObject = setInterval(function(){ pollData() }, 500);
+      console.log(pollingIntervalObject);
+      // change button
+      switchbutton = document.getElementById("switch");
+      switchbutton.className = "btn btn-danger";
+      switchbutton.innerHTML = "Stop Polling";
+    }else{
+      // Stop polling interval.
+      console.log("Clearing interval");
+      clearInterval(pollingIntervalObject);
+      console.log(pollingIntervalObject);
+      // Change button
+      switchbutton = document.getElementById("switch");
+      switchbutton.className = "btn btn-primary";
+      switchbutton.innerHTML = "Start Polling";
+    }
+
+}
+
 
 // The user will use this function to trigger the polling process
 // to get node data
-function startPolling() {
+function pollData() {
+  console.log("In polldata");
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
