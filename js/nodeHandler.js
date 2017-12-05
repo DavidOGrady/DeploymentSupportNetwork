@@ -61,12 +61,12 @@ async function pollData() {
   };
   if(last_timestamp == null){
     // This should only run the first time as last_timestamp will become defined after this
-    xhttp.open("GET", "php/Display.php", true);
+    xhttp.open("GET", "api/Display.php", true);
     xhttp.send();
   }else{
     // This should run everytime once we get the timestamp data. This timestamp is used
     // by Display.php to fetch only new data as it comes into the db
-    xhttp.open("GET", "php/Display.php?last_timestamp="+last_timestamp, true);
+    xhttp.open("GET", "api/Display.php?last_timestamp="+last_timestamp, true);
     xhttp.send();
   }
 };
@@ -99,6 +99,7 @@ function buildNode(item) {
   // create textarea for nodeData
   var textarea = document.createElement("textarea");
   textarea.id = 'Textarea ' + item.Node_ID;
+  textarea.readOnly = true;
   col.appendChild(textarea);
   var t = document.createTextNode(item.data);
   textarea.appendChild(t);
@@ -137,7 +138,7 @@ async function getMostRecentTimestamp(dataset){
   if(dataset){
     try{
     mostRecentTime = dataset[0].ts.$date.$numberLong;
-  }catch(e){ // Catch error throwing for when dataset is undefined 
+  }catch(e){ // Catch error throwing for when dataset is undefined
   }
     for(var item in dataset){
       if(mostRecentTime < dataset[item].ts.$date.$numberLong){
