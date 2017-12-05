@@ -2,7 +2,7 @@
    require '/var/composer/vendor/autoload.php';
 
    // Setup  Server and MongoDB configuration
-   
+
    $user = "ogrady";
    $manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");
    $collection = new MongoDB\Collection($manager, $user, 'DSNdata');
@@ -20,7 +20,7 @@
    }else{
      $filter = [];
    }
-   $options = [];
+   $options = ['sort' => ['Node_ID' => 1]];
    $query = new MongoDB\Driver\Query($filter, $options);
    $cursor = $manager->executeQuery("$user.DSNdata", $query);
 

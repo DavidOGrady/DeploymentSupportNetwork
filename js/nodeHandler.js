@@ -13,18 +13,14 @@ function pollSwitch() {
     pollingSwitch = !pollingSwitch;
     if (pollingSwitch){
       // Start polling and change button to off switch
-      console.log("Start Polling");
-      pollingIntervalObject = setInterval(function(){ pollData() }, 500);
-      console.log(pollingIntervalObject);
+      pollingIntervalObject = setInterval(function(){ pollData() }, 1000);
       // change button
       switchbutton = document.getElementById("switch");
       switchbutton.className = "btn btn-danger";
       switchbutton.innerHTML = "Stop Polling";
     }else{
       // Stop polling interval.
-      console.log("Clearing interval");
       clearInterval(pollingIntervalObject);
-      console.log(pollingIntervalObject);
       // Change button
       switchbutton = document.getElementById("switch");
       switchbutton.className = "btn btn-primary";
@@ -36,10 +32,9 @@ function pollSwitch() {
 
 // The user will use this function to trigger the polling process
 // to get node data
-function pollData() {
-  console.log("In polldata");
+async function pollData() {
   var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
+  xhttp.onreadystatechange = async function() {
     if (this.readyState == 4 && this.status == 200) {
       // Parse Node data into json
       Data = JSON.parse(this.responseText);
@@ -48,17 +43,19 @@ function pollData() {
         // check if a node interface already exists for the node
         if(doesNodeExist(Data[item].Node_ID)){
           // if it does exist. Just append the data to the node interface
-          appendNodeData(Data[item]);
+          await appendNodeData(Data[item]);
 
         }else{
         // else, Create a node interface for the node.
-        buildNode(Data[item]);
+        await buildNode(Data[item]);
         // Increment amountOfNodesInRow so we can keep track of nodes in current row.
         amountOfNodesInRow++;
-        IsRowFull(amountOfNodesInRow);
+        await IsRowFull(amountOfNodesInRow);
         }
-        // Save the Last Timestamp of the last piece of data displayed to the gui
-        last_timestamp = Data[item].ts.$date.$numberLong;
+      }
+      // Save most recent last_timestamp
+      if(await getMostRecentTimestamp(Data)){
+        last_timestamp = await getMostRecentTimestamp(Data);
       }
     }
   };
@@ -132,4 +129,24 @@ function doesNodeExist(Node_ID) {
     }else{
       return false;
     }
+}
+// Find the most recent timestamp from the dataset
+async function getMostRecentTimestamp(dataset){
+  // Save the Last Timestamp of the last piece of data displayed to the gui
+  var mostRecentTime;
+  if(dataset){
+    try{
+    mostRecentTime = dataset[0].ts.$date.$numberLong;
+  }catch(e){ // Catch error throwing for when dataset is undefined 
+  }
+    for(var item in dataset){
+      if(mostRecentTime < dataset[item].ts.$date.$numberLong){
+        mostRecentTime = dataset[item].ts.$date.$numberLong;
+      }
+    }
+    return mostRecentTime;
+  }else{
+    // return null and keep the most recent before this function
+    return null;
+  }
 }
