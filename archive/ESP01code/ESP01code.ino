@@ -26,40 +26,44 @@ void setup() {
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid,password);
     while(WiFi.status() != WL_CONNECTED) {/*when we have wifi connection*/
-        delay(1000);
-        //Serial.print("Still trying to connect");
+        delay(10);
+        Serial.print("Still trying to connect");
     }
     //Serial.print("Connected");
 }
 
 void loop() {
-  bool done = false;
 
   if(!connected)
   {
     if(Serial.available() > 0){
       
+//      while(Serial.available() && (len<128)){
+//        data[len] = char(Serial.read());
+//        len++;
+//        }
+        
         char ch; 
         do{
           ch = char(Serial.read());
-          
           if(len<126){
             data = data + ch;
             len++;
             delay(10); // Adding this delay seems to stop the text from being sent in scraps
             }
           }while((ch!='\r')&&(len < 126));
-          done = true;
-          //Serial.println(data);
+          Serial.println(data);
       }
 
-    if (done) /*If there is a valid input sent the ESP-01 board*/
+    if (((len>0) && (data[len-1]=='\r')) || (len >= 64)) /*If there is a valid input sent the ESP-01 board*/
     {
       //Make sure that data is null terminated
-      //data[len] = '\0';
+      data[len] = '\0';
 
       // Create postData only at this point 
-      String postData = "{\"Node_ID\":1994,\"data\":\""+ data + "\"}";
+      String dataString = String(data);
+      String postData = "{\"Node_ID\":1994,\"data\":\""+ dataString + "\"}";
+      //String postData = "{\"Node_ID\":1994,\"data\":\""+ data + "\"}";
       // The following code will send a post request to the server.
       // I had to use a new string for the host name as the char array was
       // behaving in different than I had anticapted (string_host)
@@ -71,7 +75,6 @@ void loop() {
       //Reset variables
       len = 0;
       data = "";
-      done = false;
     }
   }
 }

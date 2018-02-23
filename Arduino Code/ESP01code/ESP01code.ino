@@ -22,14 +22,12 @@ HTTPClient http;
 bool connected=false;
 
 void setup() {
-    Serial.begin(9600);
+    Serial.begin(57600);
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid,password);
     while(WiFi.status() != WL_CONNECTED) {/*when we have wifi connection*/
         delay(10);
-        Serial.print("Still trying to connect");
     }
-    //Serial.print("Connected");
 }
 
 void loop() {
@@ -37,11 +35,6 @@ void loop() {
   if(!connected)
   {
     if(Serial.available() > 0){
-      
-//      while(Serial.available() && (len<128)){
-//        data[len] = char(Serial.read());
-//        len++;
-//        }
         
         char ch; 
         do{
@@ -53,20 +46,14 @@ void loop() {
             }
           }while((ch!='\r')&&(len < 126));
           Serial.println(data);
+          Serial.println(len);
       }
 
-    if (((len>0) && (data[len-1]=='\r')) || (len >= 64)) /*If there is a valid input sent the ESP-01 board*/
+    if ((len>0) && (data.charAt(len-1)=='\r')) /*If there is a valid input sent the ESP-01 board*/
     {
-      //Make sure that data is null terminated
-      data[len] = '\0';
-
       // Create postData only at this point 
       String dataString = String(data);
       String postData = "{\"Node_ID\":1994,\"data\":\""+ dataString + "\"}";
-      //String postData = "{\"Node_ID\":1994,\"data\":\""+ data + "\"}";
-      // The following code will send a post request to the server.
-      // I had to use a new string for the host name as the char array was
-      // behaving in different than I had anticapted (string_host)
       http.begin("http://" +string_host + API_path);
       http.addHeader("Content-Type", "application/json");
       http.POST(postData);
