@@ -100,6 +100,9 @@ function buildNode(item) {
   var textarea = document.createElement("textarea");
   textarea.id = 'Textarea ' + item.Node_ID;
   textarea.readOnly = true;
+  setInterval(function(){
+    textarea.scrollTop = textarea.scrollHeight;
+  }, 1000);
   col.appendChild(textarea);
   var t = document.createTextNode(item.data);
   textarea.appendChild(t);
