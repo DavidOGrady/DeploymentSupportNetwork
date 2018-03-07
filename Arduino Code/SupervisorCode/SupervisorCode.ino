@@ -12,12 +12,12 @@ HTTPClient http;         // HTTP Client object
 
 // WiFiClient client; /*socket*/
 
-const char *ssid = "Room006";
-const char *password = "ohDofa5rei9iSh4c";
-const char *host="sbsrv1.cs.nuim.ie";
+const char *ssid = "<WiFi Name>";
+const char *password = "<WiFi password>";
+const char *host="<server host address>";
 const int Port=80;
-String string_host="sbsrv1.cs.nuim.ie";
-String API_path="/fyp/ogrady/api/Record.php";
+String API_path="<path to api directory>";
+String Node_id = "<a unqiue Id to identify the node in the WSN>"; 
 
 void setup() {
     Serial.begin(57600);

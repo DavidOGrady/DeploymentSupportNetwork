@@ -10,12 +10,12 @@ extern "C" {
 WiFiServer server(2000);
 WiFiClient client; /*socket*/
 
-const char *ssid = "Room006";
-const char *password = "ohDofa5rei9iSh4c";
-const char *host="sbsrv1.cs.nuim.ie";
+const char *ssid = "<WiFi Name>";
+const char *password = "<WiFi password>";
+const char *host="<server host address>";
 const int Port=80;
-String string_host="sbsrv1.cs.nuim.ie";
-String API_path="/fyp/ogrady/api/Record.php";
+String API_path="<path to api directory>";
+String Node_id = "<a unqiue Id to identify the node in the WSN>"; 
 char buffer[80];
 int len=0;
 HTTPClient http;
@@ -47,7 +47,7 @@ void loop() {
     {
       // Using a HTTP post request, Send data to server
       String dataString = String(buffer);
-      String postData = "{\"Node_ID\":1994,\"data\":\""+ dataString + "\"}";
+      String postData = "{\"Node_ID\":"+ Node_id +",\"data\":\""+ dataString + "\"}";
       http.begin("http://" +string_host + API_path);
       http.addHeader("Content-Type", "application/json");
       http.POST(postData);
