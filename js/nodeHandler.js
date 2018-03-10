@@ -101,7 +101,13 @@ function buildNode(item) {
   textarea.id = 'Textarea ' + item.Node_ID;
   textarea.readOnly = true;
   setInterval(function(){
-    textarea.scrollTop = textarea.scrollHeight;
+    // Handles autoscrolling
+    var checker = document.getElementById(textarea.id);
+    var isFocused = (document.activeElement === checker);
+    // If a node cell is not in focus, autoscroll it.
+    if(!isFocused){
+      textarea.scrollTop = textarea.scrollHeight;
+    }
   }, 1000);
   col.appendChild(textarea);
   var t = document.createTextNode(item.data);
